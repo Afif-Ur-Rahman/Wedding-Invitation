@@ -715,14 +715,12 @@
     ></script>
     <script>
       document.getElementById('downloadButton').addEventListener('click', function() {
-        var downloadLink = 'https://drive.google.com/file/d/1VPt5HaHCdYGVj-LZFTC5MlMQT-ODFxSE/view?usp=sharing';
-    
-        var anchor = document.createElement('a');
-        anchor.href = downloadLink;
-        anchor.target = '_blank';
-        anchor.download = 'Invitation Card.pdf';
-        anchor.click();
-        document.body.removeChild(anchor);
+        const a = document.createElement('a');
+        a.href = './assets/card/Invitation Card.pdf';
+        a.download = 'Invitation Card.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       });
     </script>
   </body>
