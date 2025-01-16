@@ -53,23 +53,6 @@ export const util = (() => {
         }, timeout);
     };
 
-    const guest = () => {
-        const name = (new URLSearchParams(window.location.search)).get('to');
-        const guest = document.getElementById('guest-name');
-
-        if (!name) {
-            guest.remove();
-            return;
-        }
-
-        const div = document.createElement('div');
-        div.classList.add('m-2');
-        div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0 text-light">${guest.getAttribute('data-message')}</p><h2 class="text-light">${escapeHtml(name)}</h2>`;
-
-        document.getElementById('form-name').value = name;
-        guest.appendChild(div);
-    };
-
     const show = () => {
         guest();
         opacity('loading', 0.025);
@@ -85,8 +68,18 @@ export const util = (() => {
         const until = document.getElementById('count-down').getAttribute('data-time').replace(' ', 'T');
         const count = (new Date(until)).getTime();
 
-        setInterval(() => {
-            const distance = Math.abs(count - (new Date()).getTime());
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = count - now;
+
+            if (distance <= 0) {
+                clearInterval(interval);
+                document.getElementById('day').innerText = 0;
+                document.getElementById('hour').innerText = 0;
+                document.getElementById('minute').innerText = 0;
+                document.getElementById('second').innerText = 0;
+                return;
+            }
 
             document.getElementById('day').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
             document.getElementById('hour').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
